@@ -152,7 +152,7 @@ namespace Web.Controllers
 
                 return RedirectToAction(nameof(Index));
             }
-            catch 
+            catch
             {
                 return View();
             }
@@ -168,20 +168,28 @@ namespace Web.Controllers
             return View();
         }
 
-        [HttpPost("amigo/{id}/DeleteAmizade")]
+        [HttpGet("amigo/DeletarAmizade/{amizadeId}")]
+        public async Task<ActionResult> DeletarAmizade(Guid amizadeId)
+        {
+            var amizade = await _apiAmigos.GetAmizadeByIdAsync(amizadeId);
+
+            return View(amizade);
+        }
+
+        [HttpPost("amigo/DeletarAmizade/{amizadeId}")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> DeleteAmizade(Guid id, CriarAmizadeViewModel criarAmizadeViewModel)
+        public async Task<ActionResult> DeletarAmizade(Guid amizadeId, IFormCollection keyValues)
         {
             try
             {
-                await _apiAmigos.PostAmizadeAsync(id, criarAmizadeViewModel);
+                await _apiAmigos.DeleteAmizadeAsync(amizadeId);
 
                 return RedirectToAction(nameof(Index));
             }
             catch
             {
                 return View();
-            }
+            } 
         }
 
 

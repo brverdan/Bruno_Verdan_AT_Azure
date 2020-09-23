@@ -117,6 +117,30 @@ namespace API_Amigos.Resources.AmigoResource
             return Ok(list);
         }
 
+        [HttpGet("deletaramizades/{amizadeid}")]
+        public ActionResult GetAmizadesById([FromRoute] Guid amizadeid)
+        {
+            var response = BuscarAmizadePorId(amizadeid);
+
+            if (response == null)
+                return NotFound();
+
+            return Ok(response);
+        }
+
+        [HttpDelete("deletarAmizades/{amizadeid}")]
+        public ActionResult DeleteAmizades([FromRoute] Guid amizadeid)
+        {
+            var response = BuscarAmizadePorId(amizadeid);
+
+            if (response == null)
+                return NotFound();
+
+            ExcluirAmizade(amizadeid);
+
+            return NoContent();
+        }
+
         public AmizadeResponse CriarAmizade([FromRoute] Guid id, [FromBody] AmizadeRequest amizadeRequest)
         {
             amizadeRequest.AmigoSolicitacaoId = _context.Amigos.Include(x => x.Pais).Include(x => x.Estado).FirstOrDefault(x => x.Id == id).Id.ToString();
@@ -143,6 +167,13 @@ namespace API_Amigos.Resources.AmigoResource
             var listAmizades = _context.Amizades.Include(x => x.Amigo).Include(x => x.Amigo.Pais).Include(x => x.Amigo.Estado).Where(x => x.AmigoSolicitacaoId == id.ToString()).ToList();
 
             return _mapper.Map<IEnumerable<AmizadeResponse>>(listAmizades);
+        }
+
+        private AmizadeResponse BuscarAmizadePorId(Guid id)
+        {
+            var amizade = _context.Amizades.Include(x => x.Amigo).Include(x => x.Amigo.Pais).Include(x => x.Amigo.Estado).FirstOrDefault(x => x.Id == id);
+
+            return _mapper.Map<AmizadeResponse>(amizade);
         }
 
         private AmigoResponseWithAmizades BuscarAmigoPorId(Guid id)

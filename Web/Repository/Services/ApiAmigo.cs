@@ -155,5 +155,25 @@ namespace Web.Repository.Services
 
             return list;
         }
+
+        public async Task<string> DeleteAmizadeAsync(Guid amizadeId)
+        {
+            var response = await _httpClient.DeleteAsync($"http://localhost:59932/api/amigos/deletaramizades/{amizadeId}");
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+
+            return responseContent;
+        }
+
+        public async Task<ListarAmizadeViewModel> GetAmizadeByIdAsync(Guid amizadeId)
+        {
+            var response = await _httpClient.GetAsync($"http://localhost:59932/api/amigos/deletaramizades/{amizadeId}");
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+
+            var amizade = JsonConvert.DeserializeObject<ListarAmizadeViewModel>(responseContent);
+
+            return amizade;
+        }
     }
 }

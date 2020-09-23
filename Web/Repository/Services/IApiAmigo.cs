@@ -18,5 +18,7 @@ namespace Web.Repository.Services
 
         Task<CriarAmizadeViewModel> PostAmizadeAsync(Guid id, CriarAmizadeViewModel criarAmizadeViewModel);
         Task<List<ListarAmizadeViewModel>> GetAmizadeAsync(Guid id);
+        Task<string> DeleteAmizadeAsync(Guid amizadeId);
+        Task<ListarAmizadeViewModel> GetAmizadeByIdAsync(Guid amizadeId);
     }
 }

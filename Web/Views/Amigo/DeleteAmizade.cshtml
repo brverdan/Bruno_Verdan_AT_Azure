@@ -12,22 +12,21 @@
     <hr />
     <dl class="row">
     </dl>
-    
+
     <form asp-action="DeleteAmizade">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-group">
-            <label asp-for="Amigo.Id" class="control-label">Lista de Pessoas</label>
-            <select asp-for="Amigo.Id" class="form-control">
-                @foreach (var item in ViewBag.Amigos)
-                {
-                    <option value="@item.Amigo.Id">@item.Amigo.Name</option>
-                }
-            </select>
+            @foreach (var item in ViewBag.Amigos)
+            {
+                <div class="form-group">
+                    <label asp-for="Amigo.Name" class="control-label">@item.Amigo.Name</label>
+                    <span asp-validation-for="Amigo.Name" class="text-danger"></span>
+                </div>
+                @Html.ActionLink("Deletar", "DeletarAmizade", new { item.Id })
+            }
+            <div>
+                <a asp-action="Index">Back to List</a>
+            </div>
         </div>
-        <div class="form-group">
-            <input type="submit" value="Delete" class="btn btn-danger" /> |
-            <a asp-action="Index">Back to List</a>
-        </div>
-        
     </form>
 </div>
