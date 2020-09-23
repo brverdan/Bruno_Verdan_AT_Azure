@@ -109,6 +109,13 @@ namespace API_Amigos.Resources.AmigoResource
             return CreatedAtAction(nameof(Get), new { response.Id }, response);
         }
 
+        [HttpGet("{id}/deletarAmizades")]
+        public ActionResult GetAmizades([FromRoute] Guid id)
+        {
+            var list = BuscarAmizade(id);
+
+            return Ok(list);
+        }
 
         public AmizadeResponse CriarAmizade([FromRoute] Guid id, [FromBody] AmizadeRequest amizadeRequest)
         {
@@ -129,6 +136,13 @@ namespace API_Amigos.Resources.AmigoResource
             var listAmigos = _context.Amigos.ToList();
 
             return _mapper.Map<IEnumerable<AmigoResponse>>(listAmigos);
+        }
+
+        private IEnumerable<AmizadeResponse> BuscarAmizade(Guid id)
+        {
+            var listAmizades = _context.Amizades.Include(x => x.Amigo).Include(x => x.Amigo.Pais).Include(x => x.Amigo.Estado).Where(x => x.AmigoSolicitacaoId == id.ToString()).ToList();
+
+            return _mapper.Map<IEnumerable<AmizadeResponse>>(listAmizades);
         }
 
         private AmigoResponseWithAmizades BuscarAmigoPorId(Guid id)
@@ -196,6 +210,17 @@ namespace API_Amigos.Resources.AmigoResource
                 return;
 
             _context.Amigos.Remove(amigo);
+            _context.SaveChanges();
+        }
+
+        private void ExcluirAmizade(Guid id)
+        {
+            var amizade = _context.Amizades.Find(id);
+
+            if (amizade == null)
+                return;
+
+            _context.Amizades.Remove(amizade);
             _context.SaveChanges();
         }
     }

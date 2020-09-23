@@ -144,5 +144,16 @@ namespace Web.Repository.Services
 
             return criarAmizadeViewModel;
         }
+
+        public async Task<List<ListarAmizadeViewModel>> GetAmizadeAsync(Guid id)
+        {
+            var response = await _httpClient.GetAsync($"http://localhost:59932/api/amigos/{id}/deletaramizades");
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+
+            var list = JsonConvert.DeserializeObject<List<ListarAmizadeViewModel>>(responseContent);
+
+            return list;
+        }
     }
 }

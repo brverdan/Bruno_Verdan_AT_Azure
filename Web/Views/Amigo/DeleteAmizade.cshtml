@@ -1,0 +1,33 @@
+﻿@model Web.Models.Amigo.ListarAmizadeViewModel
+
+@{
+    ViewData["Title"] = "DeleteAmizade";
+}
+
+<h1>DeleteAmizade</h1>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>CriarAmizadeViewModel</h4>
+    <hr />
+    <dl class="row">
+    </dl>
+    
+    <form asp-action="DeleteAmizade">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="Amigo.Id" class="control-label">Lista de Pessoas</label>
+            <select asp-for="Amigo.Id" class="form-control">
+                @foreach (var item in ViewBag.Amigos)
+                {
+                    <option value="@item.Amigo.Id">@item.Amigo.Name</option>
+                }
+            </select>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Delete" class="btn btn-danger" /> |
+            <a asp-action="Index">Back to List</a>
+        </div>
+        
+    </form>
+</div>

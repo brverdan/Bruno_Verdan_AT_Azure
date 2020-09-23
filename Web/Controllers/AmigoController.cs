@@ -158,6 +158,32 @@ namespace Web.Controllers
             }
         }
 
+        [HttpGet("amigo/{id}/DeleteAmizade")]
+        public async Task<ActionResult> DeleteAmizade(Guid id)
+        {
+            var listaAmigos = await _apiAmigos.GetAmizadeAsync(id);
+
+            ViewBag.Amigos = listaAmigos;
+
+            return View();
+        }
+
+        [HttpPost("amigo/{id}/DeleteAmizade")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> DeleteAmizade(Guid id, CriarAmizadeViewModel criarAmizadeViewModel)
+        {
+            try
+            {
+                await _apiAmigos.PostAmizadeAsync(id, criarAmizadeViewModel);
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
 
         private async Task<string> UploadFotoAmigo(IFormFile foto)
         {
